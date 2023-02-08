@@ -145,6 +145,12 @@ illixr_hmd_get_tracked_pose(struct xrt_device *xdev,
 	*out_timestamp = time_state_get_now(timekeeping);
 	out_relation->pose = illixr_read_pose();
 
+	std::cout << "fast position: " << out_relation->pose.position.x << " "
+	                               << out_relation->pose.position.y << " "
+								   << out_relation->pose.position.z << " " 
+			  << "at timestamp:"   << *out_timestamp << " "
+								   << std::endl;
+	
 	out_relation->relation_flags = (enum xrt_space_relation_flags)(
 	    XRT_SPACE_RELATION_ORIENTATION_VALID_BIT |
 	    XRT_SPACE_RELATION_POSITION_VALID_BIT);
