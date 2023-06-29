@@ -666,9 +666,9 @@ typedef struct XrFovf {
 } XrFovf;
 
 enum view_type{
-    keyframe_gen,
-    ordinaryframe_gen,
-    prediction_gen
+    keyframe_gen_view,
+    normalframe_gen_view,
+    prediction_gen_view
 };
 
 typedef struct XrViewExtension{
