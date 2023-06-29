@@ -207,6 +207,14 @@ struct xrt_size
 	int w;
 	int h;
 };
+// Added: Pose type that worth notification:
+// due to the lower level result, it may compose of:
+// 
+enum xrt_pose_type{
+	keyframe_gen, // the lasted cam frame used to gen this pose is marked as keyframe
+	normalframe_gen, // the lasted cam frame used to gen this pose isn't marked as keyframe
+	prediction_gen,
+};
 
 /*!
  * A pose composed of a position and orientation.
@@ -219,6 +227,7 @@ struct xrt_pose
 {
 	struct xrt_quat orientation;
 	struct xrt_vec3 position;
+	enum xrt_pose_type pose_type;
 };
 
 /*!

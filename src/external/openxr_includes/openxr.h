@@ -665,6 +665,18 @@ typedef struct XrFovf {
     float    angleDown;
 } XrFovf;
 
+enum view_type{
+    keyframe_gen,
+    ordinaryframe_gen,
+    prediction_gen
+};
+
+typedef struct XrViewExtension{
+    // For adding information about the view
+    // pointed by XrView through next
+    enum view_type; 
+} XrViewExtension;
+
 typedef struct XrView {
     XrStructureType       type;
     void* XR_MAY_ALIAS    next;
