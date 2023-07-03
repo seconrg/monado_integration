@@ -24,13 +24,18 @@ public:
 		, _m_clock{pb->lookup_impl<RelativeClock>()}
 		, sb_eyebuffer{sb->get_writer<rendered_frame>("eyebuffer")}
 		, sb_vsync_estimate{sb->get_reader<switchboard::event_wrapper<time_point>>("vsync_estimate")}
-	{ }
+		, _m_slow_pose {sb->get_reader<pose_type>("slow_pose")}
+	{ 
+		_last_slow_pose_tick = -1;
+	}
 
 	const std::shared_ptr<switchboard> sb;
 	const std::shared_ptr<pose_prediction> sb_pose;
 	std::shared_ptr<RelativeClock> _m_clock;
 	switchboard::writer<rendered_frame> sb_eyebuffer;
 	switchboard::reader<switchboard::event_wrapper<time_point>> sb_vsync_estimate;
+	switchboard::reader<pose_type> _m_slow_pose;
+	long _last_slow_pose_tick; // record the time when the last tick 
 	fast_pose_type prev_pose; /* stores a copy of pose each time illixr_read_pose() is called */
 	time_point sample_time; /* when prev_pose was stored */
 };
@@ -51,6 +56,7 @@ extern "C" struct xrt_pose illixr_read_pose() {
 	}
 	struct xrt_pose ret;
 	const fast_pose_type fast_pose = illixr_plugin_obj->sb_pose->get_fast_pose();
+	
 	const pose_type pose = fast_pose.pose;
 
 	// record when the pose was read for use in write_frame
@@ -63,7 +69,20 @@ extern "C" struct xrt_pose illixr_read_pose() {
 	ret.position.x = pose.position.x();
 	ret.position.y = pose.position.y();
 	ret.position.z = pose.position.z();
-
+	// add the position type
+	switchboard::ptr<const pose_type> slow_pose = illixr_plugin_obj->_m_slow_pose.get_ro_nullable();
+	if (slow_pose){
+		long slow_pose_tick = slow_pose->sensor_time.time_since_epoch().count();
+		if (slow_pose_tick > illixr_plugin_obj->_last_slow_pose_tick){
+			illixr_plugin_obj->_last_slow_pose_tick = slow_pose_tick;
+			ret.pose_type = keyframe_gen;
+		}else{
+			ret.pose_type = prediction_gen;
+		}
+	}else{
+		ret.pose_type = prediction_gen;
+	}
+	
 	// store pose in static variable for use in write_frame
 	illixr_plugin_obj->prev_pose = fast_pose; // copy member variables
 
