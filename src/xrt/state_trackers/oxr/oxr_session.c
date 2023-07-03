@@ -205,7 +205,7 @@ oxr_session_get_view_pose_at(struct oxr_logger *log,
 	xdev->get_tracked_pose(xdev, XRT_INPUT_GENERIC_HEAD_POSE,
 	                       sess->sys->inst->timekeeping, &timestamp,
 	                       &relation);
-    printf("Current relations: %f, %f, %f, with pose type %d\n", 
+    // printf("Current relations: %f, %f, %f, with pose type %d\n", 
 	    relation.pose.position.x, relation.pose.position.y, relation.pose.position.z, 
 		relation.pose.pose_type);
 	// Add in the offset from the tracking system.
