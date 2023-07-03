@@ -73,6 +73,7 @@ extern "C" struct xrt_pose illixr_read_pose() {
 	switchboard::ptr<const pose_type> slow_pose = illixr_plugin_obj->_m_slow_pose.get_ro_nullable();
 	if (slow_pose){
 		long slow_pose_tick = slow_pose->sensor_time.time_since_epoch().count();
+		printf("Slow pose sensor time: %ld", slow_pose_tick);
 		if (slow_pose_tick > illixr_plugin_obj->_last_slow_pose_tick){
 			illixr_plugin_obj->_last_slow_pose_tick = slow_pose_tick;
 			ret.pose_type = keyframe_gen;
