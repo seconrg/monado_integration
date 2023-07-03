@@ -174,6 +174,7 @@ oxr_xrLocateViews(XrSession session,
 	} else {
 		OXR_VERIFY_ARG_NOT_NULL(&log, views);
 	}
+	printf("Getting views!\n");
 
 	return oxr_session_views(&log, sess, viewLocateInfo, viewState,
 	                         viewCapacityInput, viewCountOutput, views);
