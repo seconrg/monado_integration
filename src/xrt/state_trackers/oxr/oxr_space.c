@@ -345,6 +345,7 @@ oxr_space_locate(struct oxr_logger *log,
 		location->locationFlags = 0;
 		return ret;
 	}
+	printf("Getting space location!");
 
 	// Combine space and base space poses with pure relation
 	struct xrt_space_relation result;
