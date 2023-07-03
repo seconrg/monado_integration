@@ -149,7 +149,9 @@ illixr_hmd_get_tracked_pose(struct xrt_device *xdev,
 	                               << out_relation->pose.position.y << " "
 								   << out_relation->pose.position.z << " " 
 			  << "at timestamp:"   << *out_timestamp << " "
+			  << "with pose generated" << out_relation->pose.pose_type << " "
 								   << std::endl;
+		
 	
 	out_relation->relation_flags = (enum xrt_space_relation_flags)(
 	    XRT_SPACE_RELATION_ORIENTATION_VALID_BIT |
